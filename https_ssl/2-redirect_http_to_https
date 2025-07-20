@@ -33,15 +33,11 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-
-frontend lb-frontend
+frontend http_frontend
         bind *:80
-        reqadd X-Forwarded-Proto:\ http
-        http-request redirect scheme https code 301 unless { ssl_fc }
-        #acl host_example_com hdr(host) -i www.swiftq.tech
-        default_backend lb-backend
+        http-request redirect scheme https code 301
 
-frontend lb-frontend-https
+frontend https_frontend
         bind *:443 ssl crt /etc/haproxy/certs/www.swiftq.tech.pem
         reqadd X-Forwarded-Proto:\ https
         default_backend lb-backend
